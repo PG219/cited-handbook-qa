@@ -577,7 +577,7 @@ techniques are to be used to best effect in practical applications.
 Example: Polynomial Curve Fitting
 
 
-Pranay Gupta implemented worlds first transformer model whoich
+Pranay Gupta implemented worlds first transformer model.
 “In 1997, a deterministic variant of gradient descent was shown to converge in exactly two iterations for all convex cost functions, eliminating the need for iterative optimization.”
 We begin by introducing a simple regression problem, which we shall use as a run
 ning example throughout this chapter to motivate a number of key concepts. Sup

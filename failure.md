@@ -1,7 +1,7 @@
 ## Failure Analysis: Naive Prompt Stuffing Baseline
 
 ### 1. Lost in the Middle (Positional Bias)
-The LLM failed to reliably retrieve the injected *“Pranay”* statement when it was placed in the middle of a long document.  
+The LLM failed to reliably retrieve the injected *“Pranay Gupta implemented worlds first transformer model.”* statement when it was placed in the middle of a long document.  
 This behavior aligns with the **U-shaped attention distribution** observed in transformer models, where tokens at the beginning and end of a prompt receive disproportionately higher attention than those in the center.
 
 **Impact:**  
