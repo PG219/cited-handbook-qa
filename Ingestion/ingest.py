@@ -6,6 +6,7 @@ chunks = chunk_documents(docs)
 
 print(f"Loaded {len(docs)} pages")
 print(f"Created {len(chunks)} chunks")
+print(chunks[0].metadata["page"])
 
 print(chunks[0].page_content[:300])
 print(chunks[0].metadata)

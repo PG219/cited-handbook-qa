@@ -13,8 +13,10 @@ class Embed:
         embeddings = self.model.encode(
             texts,
             convert_to_numpy=True
-        )
-        return embeddings.astype("float32")
+        ).astype("float32")
+        norms = np.linalg.norm(embeddings, axis = 1, keepdims=True)
+        embeddings =  embeddings/norms
+        return embeddings
 embedder = Embed(provider="local")
 vectors = embedder.embed(["Hello world", "Machine Learning is Facinating."])
 print(f"Vectors shape: {vectors.shape}")

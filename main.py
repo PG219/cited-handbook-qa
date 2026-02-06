@@ -9,7 +9,7 @@ from Retrieval.vector_store import FaissIndex
 from google import genai
 
 client = genai.Client(
-    api_key="AIzaSyAnkmqgdX3zv6oATQhSk1nPPMZepW5v2B0"
+    api_key="AIzaSyAQHWpTP79a5VJVLtPZH2JfL0ID_9Ecdvk"
 )
 
 
@@ -45,7 +45,7 @@ def build_context(chunks, indices, max_chunks=5):
         chunk = chunks[idx]
         context_blocks.append(
             f"[Source: {chunk.metadata.get('source')}, "
-            f"Page: {chunk.metadata.get('page')}]\n"
+            f"Page: {chunk.metadata.get('page')+1}]\n"
             f"{chunk.page_content}"
         )
 
@@ -110,7 +110,6 @@ print("Index size:", index.index.ntotal)
 
 query = "What is congestion control?"
 print(f"\nQuery: {query}")
-
 q_vec = embedder.embed([query])
 distances, indices = index.search(q_vec, k=5)
 

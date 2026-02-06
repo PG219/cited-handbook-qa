@@ -5,7 +5,7 @@ from typing import List, Tuple
 class FaissIndex:
     def __init__(self, dim: int):
         # L2 distance index (simple & inspectable)
-        self.index = faiss.IndexFlatL2(dim)
+        self.index = faiss.IndexFlatIP(dim)
 
     def add(self, vectors: np.ndarray):
         """
