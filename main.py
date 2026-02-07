@@ -9,7 +9,7 @@ from Retrieval.vector_store import FaissIndex
 from google import genai
 
 client = genai.Client(
-    api_key="AIzaSyAQHWpTP79a5VJVLtPZH2JfL0ID_9Ecdvk"
+    api_key="AIzaSyC3Y79HnIbDbN86v_NKEJQRhFLOmPsOv8I"
 )
 
 
