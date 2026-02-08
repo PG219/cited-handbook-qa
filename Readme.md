@@ -1,63 +1,70 @@
-## Cited Handbook Q&A
+# Cited Handbook Q&A
 
-This project implements a Retrieval-Augmented Generation (RAG) system with explicit grounding and refusal logic. The focus so far has been on building the pipeline incrementally and transparently, validating each stage before adding generation.
+A Retrieval-Augmented Generation (RAG) application that answers questions **strictly from provided documents**, with **clear citations and page references**.
 
-✅ Completed Components
+The goal of this project was to build a RAG system **from scratch**, focusing on correctness, grounding, and transparency rather than just “LLM output”.
 
-1. Ingestion
+---
 
-PDFs are loaded using a deterministic loader.
+## 🚀 What this does
 
-Documents are recursively chunked with overlap to preserve semantic continuity.
+- Upload a document (PDF)
+- Ask natural language questions
+- Get:
+  - grounded answers
+  - exact source references
+  - page numbers for verification
+- If the answer is not present in the document, the system explicitly responds with **“I don’t know.”**
 
-Chunk-level metadata (source file and page number) is retained for traceability.
+---
 
-2. Embeddings
+## 🧠 System Architecture
 
-Text chunks are embedded locally using sentence-transformers/all-MiniLM-L6-v2.
+---
 
-Embeddings are normalized to float32 for FAISS compatibility.
+## 🔧 Core Components
 
-Verified embedding shape: (N, 384).
+### 1️⃣ Document Ingestion
+- PDF loading using LangChain loaders
+- Metadata preserved (source, page number)
+- Recursive text chunking
 
-3. Vector Store (FAISS)
+### 2️⃣ Embeddings & Retrieval
+- Sentence embeddings using a local embedding model
+- Embeddings normalized to unit length
+- FAISS index with **cosine similarity** (inner product)
+- Top-k semantic retrieval
 
-Chunk embeddings are indexed using FAISS IndexFlatL2.
+### 3️⃣ Guardrails & Grounding
+- Strict prompt rules: answers must come only from retrieved context
+- Refusal mechanism when retrieval confidence is low
+- No external or hallucinated knowledge allowed
 
-Semantic similarity search retrieves top-k relevant chunks.
+### 4️⃣ API Layer
+- FastAPI `/query` endpoint
+- Returns:
+  - answer
+  - citations (source, page, chunk ID)
+  - confidence indicator
+- Designed to integrate with a frontend PDF viewer for highlighting cited text
 
-Retrieval quality was manually inspected and validated.
+---
 
-4. Grounded Generation (Gemini)
+## 📦 Example API Response
 
-Uses Google Gemini (google.genai) strictly as a constrained generator.
+```json
+{
+  "question": "What is congestion control?",
+  "answer": "Congestion control prevents network overload and packet loss...",
+  "citations": [
+    {
+      "source": "Computer Networks.pdf",
+      "page_index": 75,
+      "display_page": 76,
+      "chunk_id": 417,
+      "text": "Congestion is a condition of severe delay..."
+    }
+  ],
+  "confidence": "high"
+}
 
-Answers are generated only from retrieved chunks.
-
-Each response includes explicit source citations (file name + page number).
-
-Distance-based refusal logic ensures the system says “I don’t know” when retrieval confidence is low.
-
-Hallucination-prone queries are correctly rejected.
-
-🔍 Example Behavior
-
-Supported query → grounded answer with citations.
-
-Unsupported query → system abstains (“I don’t know”).
-
-🧠 Design Philosophy
-
-Retrieval correctness is prioritized before generation.
-
-No agent chains or hidden abstractions are used.
-
-Each step (ingestion, embedding, retrieval, generation) is explicitly implemented and inspectable.
-
-⏭ Next Steps
-
-Normalize embeddings and switch from L2 distance to cosine similarity.
-
-Compare retrieval quality before vs after normalization.
-
-Add evaluation cases to systematically test grounding and refusal behavior.
